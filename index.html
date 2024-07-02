@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      .hgroup {
+        display: flex;
+        height: 100%;
+        width: 100%;
+      }
+
+      textarea {
+        flex-grow: 1;
+        resize: none;
+      }
+
+      .vgroup {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hgroup">
+      <textarea id="syntax" autocomplete="off" spellcheck="false"></textarea>
+      <div class="vgroup">
+        <textarea id="input" autocomplete="off" spellcheck="false"></textarea>
+        <textarea id="output" autocomplete="off" spellcheck="false"></textarea>
+      </div>
+    </div>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
