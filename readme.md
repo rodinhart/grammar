@@ -48,49 +48,46 @@ const example = {
 ```js
 export const interpret = (syntax, source, rule, start) =>
   rule.reduce((r, { seq, gencode }) => {
-    if (r) {
-      return r
-    }
+    if (!r) {
+      const result = seq.reduce(
+        (r, term) => {
+          if (r) {
+            const { matches, index } = r
 
-    const result = seq.reduce(
-      (r, term) => {
-        if (!r) {
-          return r
-        }
-
-        const { matches, index } = r
-
-        if (term instanceof RegExp) {
-          term.lastIndex = index
-          const match = term.exec(source)
-          if (match) {
-            return { matches: [...matches, match[0]], index: term.lastIndex }
-          } else {
-            return null
-          }
-        } else {
-          const sub = interpret(syntax, source, syntax[term], index)
-          if (sub) {
-            return {
-              matches: [...matches, sub.matches],
-              index: sub.index,
+            if (term instanceof RegExp) {
+              term.lastIndex = index
+              const match = term.exec(source)
+              if (match) {
+                return {
+                  matches: [...matches, match[0]],
+                  index: term.lastIndex,
+                }
+              }
+            } else {
+              const sub = interpret(syntax, source, syntax[term], index)
+              if (sub) {
+                return {
+                  matches: [...matches, sub.matches],
+                  index: sub.index,
+                }
+              }
             }
-          } else {
-            return null
           }
-        }
-      },
-      { matches: [], index: start }
-    )
 
-    if (result) {
-      return {
-        matches: (gencode ?? ((x) => x))(...result.matches),
-        index: result.index,
+          return null
+        },
+        { matches: [], index: start }
+      )
+
+      if (result) {
+        return {
+          matches: (gencode ?? ((x) => x))(...result.matches),
+          index: result.index,
+        }
       }
-    } else {
-      return null
     }
+
+    return r
   }, null)
 ```
 
