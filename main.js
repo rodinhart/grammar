@@ -40,8 +40,8 @@ const example = {
 }
 
 export const interpret = (syntax, source, rule, start) =>
-  rule.reduce((r, { seq, gencode }) => {
-    if (!r) {
+  rule
+    .map(({ seq, gencode }) => {
       const result = seq.reduce(
         (r, term) => {
           if (r) {
@@ -78,10 +78,8 @@ export const interpret = (syntax, source, rule, start) =>
           index: result.index,
         }
       }
-    }
-
-    return r
-  }, null)
+    })
+    .reduce((r, x) => r || x, null)
 
 const exampleSource = "28 x 14 y2"
 

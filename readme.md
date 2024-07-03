@@ -47,8 +47,8 @@ const example = {
 
 ```js
 export const interpret = (syntax, source, rule, start) =>
-  rule.reduce((r, { seq, gencode }) => {
-    if (!r) {
+  rule
+    .map(({ seq, gencode }) => {
       const result = seq.reduce(
         (r, term) => {
           if (r) {
@@ -85,10 +85,8 @@ export const interpret = (syntax, source, rule, start) =>
           index: result.index,
         }
       }
-    }
-
-    return r
-  }, null)
+    })
+    .reduce((r, x) => r || x, null)
 ```
 
 ## Test
@@ -217,6 +215,18 @@ export const handrolled = {
 ```
 
 ## Test
+
+# Evil
+
+```
+
+terminal = _ /\/(\\\/|[^\/])+\//  (_, s) => eval(s + "y");
+
+terminal = _ /\/(\\\/|[^\/])+\//
+  (_, s) => ((re, m) => (source) => (re.lastIndex = 0, m = re.exec(source), m, re))(eval(s + "y"));
+
+_ = /\s*/ ;
+```
 
 # Journal
 

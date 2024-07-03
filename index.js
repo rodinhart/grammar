@@ -202,6 +202,10 @@ const exec = () => {
   }
 
   outputEl.value = res != null ? prn(res.matches) : ""
+
+  if (typeof res?.matches === "function") {
+    console.log(prn(res.matches(inputEl.value)))
+  }
 }
 
 syntaxEl.addEventListener("input", () => {
