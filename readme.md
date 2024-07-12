@@ -216,18 +216,6 @@ export const handrolled = {
 
 ## Test
 
-# Evil
-
-```
-
-terminal = _ /\/(\\\/|[^\/])+\//  (_, s) => eval(s + "y");
-
-terminal = _ /\/(\\\/|[^\/])+\//
-  (_, s) => ((re, m) => (source) => (re.lastIndex = 0, m = re.exec(source), m, re))(eval(s + "y"));
-
-_ = /\s*/ ;
-```
-
 # Journal
 
 ```js
@@ -256,4 +244,26 @@ _ = /\s*/ ;
 // rince and repeat
 
 // Should we start loading from file, as escaping is becoming an issue?
+```
+
+# Regex
+
+```
+regex = or ;
+
+or = dot or2  (lhs, rest) => lhs + rest;
+or2 = /\|/ dot or2  (op, rhs, rest) => rhs + op + rest;
+    | /.{0}/  () => "";
+
+dot = star dot2  (lhs, rest) => lhs + rest;
+dot2 = star dot2  (rhs, rest) => rhs + "." + rest;
+     | /.{0}/  () => "";
+
+star = unit /\*/  (lhs, op) => lhs + op;
+     | unit ;
+
+unit = /\(/ regex /\)/ (o, r, c) => r;
+     | char ;
+
+char = /[a-z]/ ;
 ```
