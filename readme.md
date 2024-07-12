@@ -47,8 +47,8 @@ const example = {
 
 ```js
 export const interpret = (syntax, source, rule, start) =>
-  rule
-    .map(({ seq, gencode }) => {
+  rule.reduce((r, { seq, gencode }) => {
+    if (!r) {
       const result = seq.reduce(
         (r, term) => {
           if (r) {
@@ -85,8 +85,10 @@ export const interpret = (syntax, source, rule, start) =>
           index: result.index,
         }
       }
-    })
-    .reduce((r, x) => r || x, null)
+    }
+
+    return r
+  }, null)
 ```
 
 ## Test
